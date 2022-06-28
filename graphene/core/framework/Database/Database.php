@@ -33,7 +33,6 @@ class Database
 
         try {
             self::$PDOInstance = new PDO($dsn, $settings['user'], $settings['password'], $opt);
-            echo 1;
             self::$PDOInstance->exec("set names utf8");
         } catch (\PDOException $e) {
             echo 'Error connecting to database';
