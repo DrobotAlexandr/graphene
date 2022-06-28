@@ -1,13 +1,13 @@
 <?php
 
-namespace Modules\Catalog\Models;
+namespace Modules\Users\Models;
 
 use Graphene\Database\ORM\Model;
 
-class Product extends Model
+class Users extends Model
 {
-    public string $name = 'Товары';
-    public string $table = 'catalog_products';
+    public string $name = 'Пользователи';
+    public string $table = 'users';
 
     public array $options = [
         'panel' => [
@@ -44,29 +44,6 @@ class Product extends Model
             'config' => [],
         ],
         [
-            'name' => 'Изображение',
-            'column' => 'image',
-            'type' => 'varchar(255)',
-            'editor' => 'files',
-            'config' => [
-                'multiFile' => false
-            ],
-        ],
-        [
-            'name' => 'Краткое описание',
-            'column' => 'short_description',
-            'type' => 'text',
-            'editor' => 'text-textarea',
-            'config' => [],
-        ],
-        [
-            'name' => 'Полное описание',
-            'column' => 'full_description',
-            'type' => 'text',
-            'editor' => 'text-editor',
-            'config' => [],
-        ],
-        [
             'name' => 'Дата создания',
             'column' => 'created_at',
             'type' => 'datetime',
@@ -86,7 +63,7 @@ class Product extends Model
             'type' => 'varchar(1)',
             'editor' => false,
             'config' => [],
-        ],
+        ]
     ];
 
 }

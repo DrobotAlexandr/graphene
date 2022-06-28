@@ -1,13 +1,13 @@
 <?php
 
-namespace Modules\Users\Models;
+namespace Modules\Catalog\Models;
 
 use Graphene\Database\ORM\Model;
 
-class User extends Model
+class Categories extends Model
 {
-    public string $name = 'Пользователи';
-    public string $table = 'users';
+    public string $name = 'Категории';
+    public string $table = 'catalog_categories';
 
     public array $options = [
         'panel' => [

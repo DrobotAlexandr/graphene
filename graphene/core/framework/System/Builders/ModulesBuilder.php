@@ -27,7 +27,7 @@ class ModulesBuilder
         mkdir($moduleDir . '/Http/');
         mkdir($moduleDir . '/Http/Controllers/');
         mkdir($moduleDir . '/Models/');
-        mkdir($moduleDir . '/Services/');
+        mkdir($moduleDir . '/Providers/');
 
         $class = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/graphene/core/signatures/GenericModule.php');
 

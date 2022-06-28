@@ -4,10 +4,10 @@ namespace Modules\Catalog\Models;
 
 use Graphene\Database\ORM\Model;
 
-class Categorie extends Model
+class Products extends Model
 {
-    public string $name = 'Категории';
-    public string $table = 'catalog_categories';
+    public string $name = 'Товары';
+    public string $table = 'catalog_products';
 
     public array $options = [
         'panel' => [
@@ -44,6 +44,29 @@ class Categorie extends Model
             'config' => [],
         ],
         [
+            'name' => 'Изображение',
+            'column' => 'image',
+            'type' => 'varchar(255)',
+            'editor' => 'files',
+            'config' => [
+                'multiFile' => false
+            ],
+        ],
+        [
+            'name' => 'Краткое описание',
+            'column' => 'short_description',
+            'type' => 'text',
+            'editor' => 'text-textarea',
+            'config' => [],
+        ],
+        [
+            'name' => 'Полное описание',
+            'column' => 'full_description',
+            'type' => 'text',
+            'editor' => 'text-editor',
+            'config' => [],
+        ],
+        [
             'name' => 'Дата создания',
             'column' => 'created_at',
             'type' => 'datetime',
@@ -63,7 +86,7 @@ class Categorie extends Model
             'type' => 'varchar(1)',
             'editor' => false,
             'config' => [],
-        ]
+        ],
     ];
 
 }

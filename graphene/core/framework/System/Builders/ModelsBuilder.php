@@ -9,7 +9,10 @@ class ModelsBuilder
         $moduleDir = $_SERVER['DOCUMENT_ROOT'] . '/graphene/app/modules/' . $module . '/';
 
         $moduleClassPath = $moduleDir . $module . 'Module.php';
-        $modelClassPath = $moduleDir . 'models/' . rtrim($code, 's') . '.php';
+        $modelClassPath = $moduleDir . 'models/' . $code . '.php';
+
+        $serviceProviderClassPath = $moduleDir . 'Providers/' . $code . 'ServiceProvider' . '.php';
+        $controllerClassPath = $moduleDir . 'Http/Controllers/' . $code . 'Controller' . '.php';
 
         if (!file_exists($moduleClassPath)) {
             return false;
@@ -26,13 +29,35 @@ class ModelsBuilder
         $class = strtr($class,
             [
                 '#NAME#' => $name,
-                '#CODE#' => rtrim($code, 's'),
+                '#CODE#' => $code,
                 '#MODULE#' => $module,
                 '#TABLE#' => $table,
             ]
         );
 
         file_put_contents($modelClassPath, $class);
+
+        $class = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/graphene/core/signatures/GenericServiceProvider.php');
+
+        $class = strtr($class,
+            [
+                '#CODE#' => $code . 'ServiceProvider',
+                '#MODULE#' => $module,
+            ]
+        );
+
+        file_put_contents($serviceProviderClassPath, $class);
+
+        $class = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/graphene/core/signatures/GenericController.php');
+
+        $class = strtr($class,
+            [
+                '#CODE#' => $code . 'Controller',
+                '#MODULE#' => $module,
+            ]
+        );
+
+        file_put_contents($controllerClassPath, $class);
 
         return true;
     }
