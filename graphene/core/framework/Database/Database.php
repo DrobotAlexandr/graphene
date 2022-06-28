@@ -6,9 +6,14 @@ use PDO;
 
 class Database
 {
+    static private $PDOInstance;
 
     public function init($params = [])
     {
+
+        if (self::$PDOInstance) {
+            return self::$PDOInstance;
+        }
 
         $settings = include $_SERVER['DOCUMENT_ROOT'] . '/graphene/config/database.php';
 
@@ -27,14 +32,15 @@ class Database
         ];
 
         try {
-            $pdo = new PDO($dsn, $settings['user'], $settings['password'], $opt);
-            $pdo->exec("set names utf8");
+            self::$PDOInstance = new PDO($dsn, $settings['user'], $settings['password'], $opt);
+            echo 1;
+            self::$PDOInstance->exec("set names utf8");
         } catch (\PDOException $e) {
             echo 'Error connecting to database';
             exit();
         }
 
-        return $pdo;
+        return self::$PDOInstance;
     }
 
 }
