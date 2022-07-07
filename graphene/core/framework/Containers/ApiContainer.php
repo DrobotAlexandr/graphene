@@ -52,7 +52,7 @@ class ApiContainer
         $templateUrl = explode(':', $this->getUrlTemplate());
         $url = $this->getUrl();
 
-        if ($this->normalizeUrl($templateUrl[0]) == $this->normalizeUrl($url)) {
+        if (strstr($this->normalizeUrl($url), $this->normalizeUrl($templateUrl[0]))) {
             return true;
         } else {
             return false;
@@ -68,9 +68,12 @@ class ApiContainer
 
     public function handle($callback)
     {
+
         if (!$this->inclusionMask()) {
             return false;
         }
+
+        $this->paramsValidate();
 
         $executeTime = [
             'start' => 0,
@@ -79,11 +82,51 @@ class ApiContainer
 
         $executeTime['start'] = microtime();
 
-        $res = $callback();
+        $context = [
+            'urlParams' => $this->getUrlParams()
+        ];
+
+        $request = $this->getRequest();
+
+        $res = $callback($context, $request);
 
         $executeTime['end'] = microtime();
 
         $this->response($res);
+    }
+
+    private function getRequest()
+    {
+        $request = file_get_contents('php://input');
+
+        return $request;
+    }
+
+    private function paramsValidate()
+    {
+
+        $errors = [];
+
+        foreach ($this->getUrlParams() as $k => $value) {
+
+            if (!$value) {
+                $errors[] = [
+                    'code' => 'paramUndefined',
+                    'param' => $k,
+                ];
+            }
+
+        }
+
+        if ($errors) {
+            error([
+                'status' => 'error',
+                'errors' => $errors,
+                'urlRequirementTemplate' => $this->getUrlTemplate()
+            ]);
+        }
+
+
     }
 
     public function getUrl()
@@ -94,7 +137,7 @@ class ApiContainer
     private function response($data)
     {
         if (!$data['status']) {
-            $data = 'ok';
+            $data['status'] = 'ok';
         }
         header('Content-type: application/json;');
         exit(json_encode($data, JSON_UNESCAPED_UNICODE));

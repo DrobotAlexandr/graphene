@@ -12,6 +12,15 @@ function dd($data): void
 
 function error($message): void
 {
+    if (is_array($message)) {
+        ob_start();
+        echo '<pre>';
+        print_r($message);
+        echo '</pre>';
+        $message = ob_get_contents();
+        ob_end_clean();
+    }
+
     getBootstrap();
     exit("<div class='container' style='padding: 20px;'><div class='alert alert-danger'>$message</div></div>");
 }

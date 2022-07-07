@@ -2,10 +2,15 @@
 
 include 'graphene.php';
 
-$container = new \Graphene\Containers\ApiContainer(
+$apiContainer = new Graphene\Containers\ApiContainer(
     '/graphene/api/:appType/:version/:module/:model/:method'
 );
 
-$container->handle(function ($context, $request) {
-    return [];
+$apiContainer->handle(function ($context, $request) {
+
+    $controllersContainer = new Graphene\Containers\ControllersContainer(
+        ['context' => $context, 'request' => $request]
+    );
+
+    return $controllersContainer->handle();
 });
